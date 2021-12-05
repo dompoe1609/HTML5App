@@ -211,10 +211,10 @@ function updateScore() {
     document.getElementById('score').innerText = player.score;
 }
 
-document.addEventListener('deviceorientation', event => {
-    if (event.gamma === 160) {
+window.addEventListener('deviceorientation', event => {
+    if (event.alpha === 160) {
         playerMove(-1);
-    } else if (event.gamma === 210) {
+    } else if (event.alpha === 210) {
         playerMove(1);
     } else if (event.keyCode === 40) {
         playerDrop();
