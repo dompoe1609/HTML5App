@@ -304,8 +304,8 @@ function handleOrientation(event) {
 //   }
   
   function updateFieldIfNotNull(value, precision=10){
-    if (value == null) {
-            playerMove(-1);
+    if (value != null) {
+            playerMove(1);
     }
 
   };
@@ -330,16 +330,16 @@ function handleOrientation(event) {
   function firstClick() {
       requestDeviceMotion(function(err) {
           if (err == null) {
-              window.removeEventListener("click", firstClick);
-              window.removeEventListener("touchend", firstClick);
-              window.addEventListener("devicemotion", handleMotion);
+              document.removeEventListener("click", firstClick);
+              document.removeEventListener("touchend", firstClick);
+              document.addEventListener("devicemotion", handleMotion);
               requestDeviceOrientation(function(error){
-                window.addEventListener("deviceorientation", handleOrientation);
+                document.addEventListener("deviceorientation", handleOrientation);
               });
           } else {
               // failed; a JS error object is stored in `err`
           }
       });
   }
-  window.addEventListener("click", firstClick);
-  window.addEventListener("touchend", firstClick);
+ document.addEventListener("click", firstClick);
+ document.addEventListener("touchend", firstClick);
