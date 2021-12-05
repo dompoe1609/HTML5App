@@ -226,14 +226,6 @@ function updateScore() {
 // });
 
 
-function handleOrientation(event) {
-    if (event.gamma >= 210){
-        playerMove(1);
-    } else if (event.gamma <= 160) {
-        playerMove(-1);
-    }
-};
-
 
 const colors = [
     null,
@@ -254,8 +246,99 @@ const player = {
     score: 0,
 };
 
-window.addEventListener("deviceorientation", handleOrientation);
 
 playerReset();
 updateScore();
 update();
+
+function handleOrientation(event) {
+    updateFieldIfNotNull('Orientation_a', event.alpha);
+    updateFieldIfNotNull('Orientation_b', event.beta);
+    updateFieldIfNotNull('Orientation_g', event.gamma);
+    incrementEventCount();
+  }
+  
+  /**
+   * @param callback function(error)
+   * @author YellowAfterlife
+   **/
+   function requestDeviceMotion(callback) {
+      if (window.DeviceMotionEvent == null) {
+          callback(new Error("DeviceMotion is not supported."));
+      } else if (DeviceMotionEvent.requestPermission) {
+          DeviceMotionEvent.requestPermission().then(function(state) {
+              if (state == "granted") {
+                  callback(null);
+              } else callback(new Error("Permission denied by user"));
+          }, function(err) {
+              callback(err);
+          });
+      } else { // no need for permission
+          callback(null);
+      }
+  }
+  
+  /**
+   * @param callback function(error)
+   * @author YellowAfterlife
+   **/
+   function requestDeviceOrientation(callback) {
+      if (window.DeviceOrientationEvent == null) {
+          callback(new Error("DeviceOrientation is not supported."));
+      } else if (DeviceOrientationEvent.requestPermission) {
+          DeviceOrientationEvent.requestPermission().then(function(state) {
+              if (state == "granted") {
+                  callback(null);
+              } else callback(new Error("Permission denied by user"));
+          }, function(err) {
+              callback(err);
+          });
+      } else { // no need for permission
+          callback(null);
+      }
+  }
+  
+  function incrementEventCount(){
+    let counterElement = document.getElementById("num-observed-events")
+    let eventCount = parseInt(counterElement.innerHTML)
+    counterElement.innerHTML = eventCount + 1;
+  }
+  
+  function updateFieldIfNotNull(fieldName, value, precision=10){
+    if (value != null)
+      document.getElementById(fieldName).innerHTML = value.toFixed(precision);
+  }
+  
+  function handleMotion(event) {
+    updateFieldIfNotNull('Accelerometer_gx', event.accelerationIncludingGravity.x);
+    updateFieldIfNotNull('Accelerometer_gy', event.accelerationIncludingGravity.y);
+    updateFieldIfNotNull('Accelerometer_gz', event.accelerationIncludingGravity.z);
+  
+    updateFieldIfNotNull('Accelerometer_x', event.acceleration.x);
+    updateFieldIfNotNull('Accelerometer_y', event.acceleration.y);
+    updateFieldIfNotNull('Accelerometer_z', event.acceleration.z);
+  
+    updateFieldIfNotNull('Accelerometer_i', event.interval, 2);
+  
+    updateFieldIfNotNull('Gyroscope_z', event.rotationRate.alpha);
+    updateFieldIfNotNull('Gyroscope_x', event.rotationRate.beta);
+    updateFieldIfNotNull('Gyroscope_y', event.rotationRate.gamma);
+    incrementEventCount();
+  }
+  
+  function firstClick() {
+      requestDeviceMotion(function(err) {
+          if (err == null) {
+              window.removeEventListener("click", firstClick);
+              window.removeEventListener("touchend", firstClick);
+              window.addEventListener("devicemotion", handleMotion);
+              requestDeviceOrientation(function(error){
+                window.addEventListener("deviceorientation", handleOrientation);
+              });
+          } else {
+              // failed; a JS error object is stored in `err`
+          }
+      });
+  }
+  window.addEventListener("click", firstClick);
+  window.addEventListener("touchend", firstClick);
