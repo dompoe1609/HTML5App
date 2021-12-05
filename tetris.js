@@ -305,11 +305,7 @@ function handleOrientation(event) {
   
   function updateFieldIfNotNull(value, precision=10){
     if (value != null) {
-        if (value.toFixed(precision) >= 210.0){
             playerMove(1);
-        } else if (value.toFixed(precision) <= 160) {
-            playerMove(-1);
-        }
     }
 
   };
