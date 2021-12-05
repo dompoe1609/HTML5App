@@ -211,19 +211,19 @@ function updateScore() {
     document.getElementById('score').innerText = player.score;
 }
 
-// document.addEventListener('keydown', event => {
-//     if (event.keyCode === 37) {
-//         playerMove(-1);
-//     } else if (event.keyCode === 39) {
-//         playerMove(1);
-//     } else if (event.keyCode === 40) {
-//         playerDrop();
-//     } else if (event.keyCode === 81) {
-//         playerRotate(-1);
-//     } else if (event.keyCode === 87) {
-//         playerRotate(1);
-//     }
-// });
+document.addEventListener('keydown', event => {
+    if (event.keyCode === 37) {
+        playerMove(-1);
+    } else if (event.keyCode === 39) {
+        playerMove(1);
+    } else if (event.keyCode === 40) {
+        playerDrop();
+    } else if (event.keyCode === 81) {
+        playerRotate(-1);
+    } else if (event.keyCode === 87) {
+        playerRotate(1);
+    }
+});
 
 
 
@@ -250,95 +250,3 @@ const player = {
 playerReset();
 updateScore();
 update();
-
-function handleOrientation(event) {
-    updateFieldIfNotNull(event.gamma);
-  }
-  
-  /**
-   * @param callback function(error)
-   * @author YellowAfterlife
-   **/
-   function requestDeviceMotion(callback) {
-      if (window.DeviceMotionEvent == null) {
-          callback(new Error("DeviceMotion is not supported."));
-      } else if (DeviceMotionEvent.requestPermission) {
-          DeviceMotionEvent.requestPermission().then(function(state) {
-              if (state == "granted") {
-                  callback(null);
-              } else callback(new Error("Permission denied by user"));
-          }, function(err) {
-              callback(err);
-          });
-      } else { // no need for permission
-          callback(null);
-      }
-  }
-  
-  /**
-   * @param callback function(error)
-   * @author YellowAfterlife
-   **/
-   function requestDeviceOrientation(callback) {
-      if (window.DeviceOrientationEvent == null) {
-          callback(new Error("DeviceOrientation is not supported."));
-      } else if (DeviceOrientationEvent.requestPermission) {
-          DeviceOrientationEvent.requestPermission().then(function(state) {
-              if (state == "granted") {
-                  callback(null);
-              } else callback(new Error("Permission denied by user"));
-          }, function(err) {
-              callback(err);
-          });
-      } else { // no need for permission
-          callback(null);
-      }
-  }
-  
-//   function incrementEventCount(){
-//     let counterElement = document.getElementById("num-observed-events")
-//     let eventCount = parseInt(counterElement.innerHTML)
-//     counterElement.innerHTML = eventCount + 1;
-//   }
-  
-  function updateFieldIfNotNull(value, precision=10){
-    if (value > 200) {
-            playerMove(1);
-    }
-
-  };
-  
-//   function handleMotion(event) {
-//     updateFieldIfNotNull('Accelerometer_gx', event.accelerationIncludingGravity.x);
-//     updateFieldIfNotNull('Accelerometer_gy', event.accelerationIncludingGravity.y);
-//     updateFieldIfNotNull('Accelerometer_gz', event.accelerationIncludingGravity.z);
-  
-//     updateFieldIfNotNull('Accelerometer_x', event.acceleration.x);
-//     updateFieldIfNotNull('Accelerometer_y', event.acceleration.y);
-//     updateFieldIfNotNull('Accelerometer_z', event.acceleration.z);
-  
-//     updateFieldIfNotNull('Accelerometer_i', event.interval, 2);
-  
-//     updateFieldIfNotNull('Gyroscope_z', event.rotationRate.alpha);
-//     updateFieldIfNotNull('Gyroscope_x', event.rotationRate.beta);
-//     updateFieldIfNotNull('Gyroscope_y', event.rotationRate.gamma);
-//     incrementEventCount();
-//   }
-  
-  function firstClick() {
-      requestDeviceMotion(function(err) {
-          if (err == null) {
-              document.removeEventListener("click", firstClick);
-              document.removeEventListener("touchend", firstClick);
-              document.addEventListener("devicemotion", handleMotion);
-              requestDeviceOrientation(function(error){
-                document.addEventListener("deviceorientation", handleOrientation);
-              });
-          } else {
-              // failed; a JS error object is stored in `err`
-          }
-      });
-  }
- document.addEventListener("click", firstClick);
- document.addEventListener("touchend", firstClick);
- document.addEventListener("deviceorientation", handleOrientation);
