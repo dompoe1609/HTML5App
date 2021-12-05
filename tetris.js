@@ -212,9 +212,9 @@ function updateScore() {
 }
 
 document.addEventListener('deviceorientation', event => {
-    if (event.gamma <= 160) {
+    if (event.gamma === 160) {
         playerMove(-1);
-    } else if (event.keyCode >= 210) {
+    } else if (event.gamma === 210) {
         playerMove(1);
     } else if (event.keyCode === 40) {
         playerDrop();
