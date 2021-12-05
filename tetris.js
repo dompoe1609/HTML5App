@@ -304,7 +304,7 @@ function handleOrientation(event) {
 //   }
   
   function updateFieldIfNotNull(value, precision=10){
-    if (value != null) {
+    if (value == null) {
             playerMove(-1);
     }
 
