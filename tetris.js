@@ -227,9 +227,9 @@ function updateScore() {
 
 
 function handleOrientation(event) {
-    if (event.gamma.value >= 210){
+    if (event.gamma >= 210){
         playerMove(1);
-    } else if (event.rotationRate.gamma <= 160) {
+    } else if (event.gamma <= 160) {
         playerMove(-1);
     }
 };
