@@ -80,7 +80,6 @@ function handleMotion(event) {
 }
 
 function firstClick() {
-    requestDeviceOrientation();
     requestDeviceMotion(function(err) {
         if (err == null) {
             window.removeEventListener("click", firstClick);
