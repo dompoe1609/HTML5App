@@ -254,6 +254,8 @@ const player = {
     score: 0,
 };
 
+window.addEventListener("deviceorientation", handleOrientation);
+
 playerReset();
 updateScore();
 update();
