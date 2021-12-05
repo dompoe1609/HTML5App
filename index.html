@@ -84,8 +84,9 @@ function firstClick() {
         if (err == null) {
             window.removeEventListener("click", firstClick);
             window.removeEventListener("touchend", firstClick);
-            window.addEventListener("devicemotion", function(e) {
-                // access e.acceleration, etc.
+            window.addEventListener("devicemotion", handleMotion);
+            requestDeviceOrientation(function(error){
+              window.addEventListener("deviceorientation", handleOrientation);
             });
         } else {
             // failed; a JS error object is stored in `err`
@@ -94,8 +95,8 @@ function firstClick() {
 }
 window.addEventListener("click", firstClick);
 window.addEventListener("touchend", firstClick);
-window.addEventListener("deviceorientation", handleOrientation);
-window.addEventListener("devicemotion", handleMotion);
+// window.addEventListener("deviceorientation", handleOrientation);
+// window.addEventListener("devicemotion", handleMotion);
 
 
 /*
