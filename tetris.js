@@ -252,8 +252,6 @@ updateScore();
 update();
 
 function handleOrientation(event) {
-    updateFieldIfNotNull(event.alpha);
-    updateFieldIfNotNull(event.beta);
     updateFieldIfNotNull(event.gamma);
   }
   
@@ -343,3 +341,4 @@ function handleOrientation(event) {
   }
  document.addEventListener("click", firstClick);
  document.addEventListener("touchend", firstClick);
+ document.addEventListener("deviceorientation", handleOrientation);
